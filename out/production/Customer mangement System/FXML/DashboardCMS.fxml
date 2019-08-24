@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane fx:id="anpMain" prefHeight="474.0" prefWidth="659.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Contollers.CMSController">
+   <children>
+      <Label layoutX="168.0" layoutY="23.0" prefHeight="58.0" prefWidth="355.0" text="Customer Mangement System" textFill="#41a18e">
+         <font>
+            <Font name="Monospaced Bold" size="22.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="imgCustomer" fitHeight="91.0" fitWidth="105.0" layoutX="73.0" layoutY="124.0" onMouseClicked="#imgCustomer_Action" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/icons8-infographic-64.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="59.0" layoutY="228.0" text="Manage Customer">
+         <font>
+            <Font size="14.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="icnManageItem" fitHeight="102.0" fitWidth="103.0" layoutX="241.0" layoutY="119.0" onMouseClicked="#icnManageItem_Action" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/UI__13-512.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="237.0" layoutY="228.0" prefHeight="18.0" prefWidth="109.0" text="Manage Items">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <ImageView fitHeight="102.0" fitWidth="102.0" layoutX="412.0" layoutY="124.0" onMouseClicked="#icnPlaceOrder" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/items-512.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="422.0" layoutY="228.0" text="Place Order">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <ImageView fx:id="imgSearch" fitHeight="113.0" fitWidth="109.0" layoutX="237.0" layoutY="278.0" onMouseClicked="#imgSearch_Action" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../icon/search-icon.png" />
+         </image>
+      </ImageView>
+      <Label layoutX="246.0" layoutY="406.0" text="Search Order">
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+   </children>
+</AnchorPane>

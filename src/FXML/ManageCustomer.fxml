@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import com.jfoenix.controls.JFXButton?>
+<?import com.jfoenix.controls.JFXTextField?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+
+<AnchorPane fx:id="anpManage" prefHeight="535.0" prefWidth="607.0" style="-fx-background-color: #DFEDF5;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Contollers.Manage">
+   <children>
+      <TableView fx:id="tblCustomer" layoutX="21.0" layoutY="282.0" prefHeight="220.0" prefWidth="565.0">
+        <columns>
+          <TableColumn fx:id="clmID" prefWidth="89.0" text="ID" />
+          <TableColumn fx:id="clmName" prefWidth="191.0" text="Name" />
+            <TableColumn fx:id="clmAddress" prefWidth="284.0" text="Address" />
+        </columns>
+      </TableView>
+      <Label layoutX="42.0" layoutY="165.0" text="Address" />
+      <Label layoutX="42.0" layoutY="103.0" text="Name" />
+      <Label layoutX="42.0" layoutY="51.0" text="ID" />
+      <JFXTextField fx:id="txtId" layoutX="149.0" layoutY="46.0" prefHeight="28.0" prefWidth="188.0" />
+      <JFXTextField fx:id="txtName" layoutX="149.0" layoutY="98.0" prefHeight="28.0" prefWidth="188.0" />
+      <JFXTextField fx:id="txtAddress" layoutX="149.0" layoutY="160.0" prefHeight="28.0" prefWidth="188.0" />
+      <JFXButton fx:id="btnNew" layoutX="353.0" layoutY="23.0" onAction="#btnNew_Action" prefHeight="28.0" prefWidth="84.0" style="-fx-background-color: #0FE4E4;" text="NEW" />
+      <JFXButton fx:id="btnback" layoutX="476.0" layoutY="23.0" onAction="#btnback_Action" prefHeight="28.0" prefWidth="84.0" style="-fx-background-color: #0FE4E4;" text="BACK" />
+      <JFXButton fx:id="btnSave" layoutX="111.0" layoutY="228.0" onAction="#btnSave_Action" prefHeight="28.0" prefWidth="103.0" style="-fx-background-color: #0FE4E4;" text="SAVE" />
+      <JFXButton fx:id="btnDelete" layoutX="385.0" layoutY="228.0" onAction="#btnDelete_Action" prefHeight="28.0" prefWidth="103.0" style="-fx-background-color: #0FE4E4;" text="DELETE" />
+   </children>
+</AnchorPane>
