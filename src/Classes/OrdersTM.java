@@ -11,18 +11,15 @@ public class OrdersTM {
     private String Total;
     private JFXButton delete;
 
+
     public OrdersTM(String itemCode, String description, String quantity, String unitePrice, String total, JFXButton delete) {
-        setItemCode(itemCode);
-        setDescription(description);
-        setQuantity(quantity);
-        setUnitePrice(unitePrice);
-        setTotal(total);
-        this.setDelete(delete);
+        ItemCode = itemCode;
+        Description = description;
+        Quantity = quantity;
+        UnitePrice = unitePrice;
+        Total = total;
+        this.delete = delete;
     }
-
-    public OrdersTM() {
-    }
-
 
     public String getItemCode() {
         return ItemCode;

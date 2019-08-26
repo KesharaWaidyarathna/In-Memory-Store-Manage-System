@@ -16,7 +16,7 @@
             <Font name="System Bold" size="25.0" />
          </font>
       </Label>
-      <TableView fx:id="tblSearch" layoutX="31.0" layoutY="136.0" prefHeight="369.0" prefWidth="603.0">
+      <TableView fx:id="tblSearch" layoutX="31.0" layoutY="136.0" onMouseClicked="#tblSearch_Action" prefHeight="369.0" prefWidth="603.0">
         <columns>
           <TableColumn fx:id="clmID" prefWidth="75.0" text="ID" />
           <TableColumn fx:id="clmDate" prefWidth="75.0" text="Date" />

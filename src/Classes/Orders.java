@@ -49,4 +49,14 @@ public class Orders {
     public void setOrderDetails(ArrayList<OrderDetails> orderDetails) {
         this.orderDetails = orderDetails;
     }
+
+    @Override
+    public String toString() {
+        return "Orders{" +
+                "id='" + id + '\'' +
+                ", date='" + date + '\'' +
+                ", customerId='" + customerId + '\'' +
+                ", orderDetails=" + orderDetails +
+                '}';
+    }
 }

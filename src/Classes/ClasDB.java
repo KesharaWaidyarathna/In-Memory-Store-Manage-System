@@ -26,21 +26,6 @@ public class ClasDB {
         items.add(new ItemsTM("I004","Monitors","10",11500));
         items.add(new ItemsTM("I005","Pen drives","30",2000));
 
-        ObservableList<Orders> orders = FXCollections.observableArrayList(ClasDB.orders);
-        ObservableList<OrdersTM> orderTable = FXCollections.observableArrayList(ClasDB.ordertm);
-        ObservableList<CustomerTM> customerName = FXCollections.observableArrayList(ClasDB.customers);
 
-
-        for (int i = 0; i < orderTable.size(); i++) {
-
-            if (orders.get(i).getCustomerId().equals(customerName.get(i).getId())) {
-
-                search.add(new SearchTM(orders.get(i).getId(),orders.get(i).getDate(),orderTable.get(i).getTotal(),orders.get(i).getCustomerId(),customerName.get(i).getName()));
-
-            }
-
-
-
-        }
     }
 }
