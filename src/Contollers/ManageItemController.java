@@ -68,25 +68,44 @@ public class ManageItemController {
 
     public void btnSave_Action(ActionEvent actionEvent) {
 
-        if (btnSave.getText().equals("Save")) {
-            double price = Double.parseDouble(txtUnitPrice.getText());
-            ObservableList<ItemsTM> item = tblItem.getItems();
-            item.add(new ItemsTM(
-                    txtItemCode.getText(),
-                    txtItemDiscription.getText(),
-                    txtHOQ.getText(),
-                    price
-            ));
-            btnNew_Action(actionEvent);
-        } else {
+        String quantityHand=txtHOQ.getText();
+        String unitPrice=txtUnitPrice.getText();
 
-            ItemsTM selectedItem = tblItem.getSelectionModel().getSelectedItem();
-            selectedItem.setItemId(txtItemCode.getText());
-            selectedItem.setItemDiscripition(txtItemDiscription.getText());
-            selectedItem.setHandsOnQuantity(txtHOQ.getText());
-            selectedItem.setUnitPrice(Double.parseDouble(txtHOQ.getText()));
-            tblItem.refresh();
-            btnNew_Action(actionEvent);
+        if(!quantityHand.matches("^\\d+$")){
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Can not Enter letters or symbol for \" Hands on Quantity\" ", ButtonType.OK);
+            alert.show();
+            txtHOQ.requestFocus();
+        }else if(!unitPrice.matches("^\\d+$")){
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Can not Enter letters or symbol for \" Unit Price\" ", ButtonType.OK);
+            alert.show();
+            txtUnitPrice.requestFocus();
+        }
+        else {
+
+            if (btnSave.getText().equals("Save")) {
+                double price = Double.parseDouble(txtUnitPrice.getText());
+                ObservableList<ItemsTM> item = tblItem.getItems();
+                item.add(new ItemsTM(
+                        txtItemCode.getText(),
+                        txtItemDiscription.getText(),
+                        txtHOQ.getText(),
+                        price
+                ));
+                Alert alert=new Alert(Alert.AlertType.INFORMATION,"Item add successfully !  ",ButtonType.OK);
+                alert.show();
+                btnNew_Action(actionEvent);
+            } else {
+
+                ItemsTM selectedItem = tblItem.getSelectionModel().getSelectedItem();
+                selectedItem.setItemId(txtItemCode.getText());
+                selectedItem.setItemDiscripition(txtItemDiscription.getText());
+                selectedItem.setHandsOnQuantity(txtHOQ.getText());
+                selectedItem.setUnitPrice(Double.parseDouble(txtHOQ.getText()));
+                tblItem.refresh();
+                btnNew_Action(actionEvent);
+                Alert alert=new Alert(Alert.AlertType.INFORMATION,"Item details update successfully !  ",ButtonType.OK);
+                alert.show();
+            }
         }
 
 
@@ -101,10 +120,12 @@ public class ManageItemController {
             ItemsTM selectedItem = tblItem.getSelectionModel().getSelectedItem();
             tblItem.getItems().remove(selectedItem);
         }
+        Alert alertDelete=new Alert(Alert.AlertType.INFORMATION,"Item delete successfully !  ",ButtonType.OK);
+        alertDelete.show();
     }
 
     public void btnBack_Action(ActionEvent actionEvent) throws IOException {
-        URL resource = this.getClass().getResource("/FXML/DashboardCMS.fxml");
+        URL resource = this.getClass().getResource("/View/DashboardCMS.fxml");
         Parent root = FXMLLoader.load(resource);
         Scene mainScene = new Scene(root);
         Stage primarystage = (Stage) (this.anpManageItems.getScene().getWindow());

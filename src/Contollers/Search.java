@@ -102,7 +102,7 @@ public class Search {
     }
 
     public void btnHome_Action(ActionEvent actionEvent) throws IOException {
-        URL resource = this.getClass().getResource("/FXML/DashboardCMS.fxml");
+        URL resource = this.getClass().getResource("/View/DashboardCMS.fxml");
         Parent root = FXMLLoader.load(resource);
         Scene mainScene = new Scene(root);
         Stage primarystage = (Stage) (this.anpSearchOrders.getScene().getWindow());
@@ -113,7 +113,7 @@ public class Search {
 
     public void tblSearch_Action(MouseEvent mouseEvent) throws IOException {
         if(mouseEvent.getClickCount()==2){
-            URL resource = this.getClass().getResource("/FXML/PlaceOrder.fxml");
+            URL resource = this.getClass().getResource("/View/PlaceOrder.fxml");
             FXMLLoader fxmlLoader = new FXMLLoader(resource);
             Parent root = fxmlLoader.load();
             Scene placeOrder = new Scene(root);

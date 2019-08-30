@@ -21,7 +21,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
-import javax.swing.*;
 import java.io.IOException;
 import java.net.URL;
 import java.text.SimpleDateFormat;
@@ -31,6 +30,7 @@ import java.util.Optional;
 
 
 public class PlaceOrderController {
+    static int newId = 0;
     public JFXTextField txtDescription;
     public JFXComboBox<String> cmbItemCode;
     public JFXTextField txtUnitePrice;
@@ -45,8 +45,6 @@ public class PlaceOrderController {
     public JFXButton btnNewOrder;
     public JFXTextField txtDate;
     public AnchorPane apnPlaceOrder;
-
-    static int newId = 0;
 
     public void initialize() {
 
@@ -101,7 +99,7 @@ public class PlaceOrderController {
             @Override
             public void changed(ObservableValue observable, Object oldValue, Object newValue) {
 
-                Object selectedItem = cmbItemCode.getSelectionModel().getSelectedItem();
+                String selectedItem = cmbItemCode.getSelectionModel().getSelectedItem();
 
                 if (selectedItem == null) {
                     return;
@@ -170,7 +168,7 @@ public class PlaceOrderController {
     }
 
     public void btnHome_Action(ActionEvent actionEvent) throws IOException {
-        URL resource = this.getClass().getResource("/FXML/DashboardCMS.fxml");
+        URL resource = this.getClass().getResource("/View/DashboardCMS.fxml");
         Parent root = FXMLLoader.load(resource);
         Scene mainScene = new Scene(root);
         Stage primarystage = (Stage) (this.apnPlaceOrder.getScene().getWindow());
@@ -180,120 +178,130 @@ public class PlaceOrderController {
     }
 
     public void btnSave_Action(ActionEvent actionEvent) {
-
         double totalAll = 0.00;
-        if (btnSave.getText().equals("Add")) {
+
+        String Quantity = txtQuantity.getText();
+
+        if (!Quantity.matches("^\\d+$")) {
+            Alert alert = new Alert(Alert.AlertType.WARNING, "Can not Enter letters or symbol for \" Quantity\" ", ButtonType.OK);
+            alert.show();
+            txtQuantity.requestFocus();
+        } else {
+            if (btnSave.getText().equals("Add")) {
 
 
-            if (txtQuantity.getText().isEmpty() || txtQuantity.getText().equals("0")) {
-                System.out.println("fkf");
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Quantity is Empty or invalid", ButtonType.OK);
-                alert.show();
-                return;
-            }
-
-            int quanty = Integer.parseInt(txtQuantity.getText());
-            int HNQ = Integer.parseInt(txtQOH.getText());
-
-            if (HNQ < quanty) {
-                Alert alert = new Alert(Alert.AlertType.ERROR, "Quantity is Higher than stock", ButtonType.OK);
-                alert.show();
-                return;
-
-            }
-            Double a = quanty * Double.parseDouble(txtUnitePrice.getText());
-            String total = String.valueOf(a);
-
-            ObservableList<OrdersTM> order = tblOrders.getItems();
-            String selectedItem = cmbItemCode.getSelectionModel().getSelectedItem();
-
-            for (int i = 0; i < order.size(); i++) {
-
-                if (selectedItem.equals(order.get(i).getItemCode())) {
-                    int d = Integer.parseInt(order.get(i).getQuantity());
-                    int l = Integer.parseInt((txtQuantity.getText()));
-                    int sum1 = d + l;
-                    order.get(i).setQuantity(String.valueOf(sum1));
-                    a = sum1 * Double.parseDouble(txtUnitePrice.getText());
-                    order.get(i).setTotal(String.valueOf(a));
-
-                    for (int j = 0; j < order.size(); j++) {
-
-                        totalAll += Double.parseDouble(order.get(j).getTotal());
-                    }
-                    lblTotal.setText(totalAll + "");
-                    tblOrders.refresh();
+                if (txtQuantity.getText().isEmpty() || txtQuantity.getText().equals("0")) {
+                    System.out.println("fkf");
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Quantity is Empty or invalid", ButtonType.OK);
+                    alert.show();
                     return;
                 }
 
-            }
+                int quanty = Integer.parseInt(txtQuantity.getText());
+                int HNQ = Integer.parseInt(txtQOH.getText());
 
-            JFXButton jfxButton = new JFXButton("Delete");
-            Object selectedItem4 = cmbItemCode.getSelectionModel().getSelectedItem();
-            String item = String.valueOf(selectedItem4);
-
-            OrdersTM newone = new OrdersTM(
-                    item,
-                    txtDescription.getText(),
-                    txtQuantity.getText(),
-                    txtUnitePrice.getText(),
-                    total,
-                    jfxButton
-            );
-
-            order.add(newone);
-            jfxButton.setOnAction(event -> {
-                btnDelete_Action(newone);
-            });
-
-            for (int i = 0; i < order.size(); i++) {
-                totalAll += Double.parseDouble(order.get(i).getTotal());
-            }
-
-            lblTotal.setText("" + totalAll);
-
-            // Update the stock
-            ObservableList<ItemsTM> items = FXCollections.observableList(ClasDB.items);
-            String selectedItemCode = cmbItemCode.getSelectionModel().getSelectedItem();
-
-            for (int i = 0; i < items.size(); i++) {
-                if (selectedItemCode.equals(items.get(i).getItemId())) {
-
-                    int count = Integer.parseInt(items.get(i).getHandsOnQuantity());
-                    int countnext = Integer.parseInt(txtQuantity.getText());
-                    int newQty = (count - countnext);
-                    items.get(i).setHandsOnQuantity(String.valueOf(newQty));
-                }
-            }
-        } else {
-            ObservableList<OrdersTM> table = tblOrders.getItems();
-            OrdersTM selectedItem1 = tblOrders.getSelectionModel().getSelectedItem();
-            ObservableList<ItemsTM> item = FXCollections.observableList(ClasDB.items);
-            ObservableList<OrdersTM> ordes1 = FXCollections.observableList(ClasDB.ordertm);
-            int value = 0;
-
-            for (int j = 0; j < table.size(); j++) {
-                if (selectedItem1.getItemCode() == table.get(j).getItemCode()) {
-                    value = Integer.parseInt(ordes1.get(j).getQuantity());
-                    ordes1.get(j).setQuantity(txtQuantity.getText());
-                    double count = Double.parseDouble(ordes1.get(j).getQuantity());
-                    double contq = Double.parseDouble(ordes1.get(j).getUnitePrice());
-                    double sum = contq * count;
-                    totalAll += sum;
-                    lblTotal.setText(totalAll + "");
-                    ordes1.get(j).setTotal(String.valueOf(sum));
+                if (HNQ < quanty) {
+                    Alert alert = new Alert(Alert.AlertType.ERROR, "Quantity is Higher than stock", ButtonType.OK);
+                    alert.show();
+                    return;
 
                 }
-                if (selectedItem1.getItemCode() == item.get(j).getItemId()) {
-                    int count = Integer.parseInt(ordes1.get(j).getQuantity());
-                    int countq = Integer.parseInt(item.get(j).getHandsOnQuantity() + value);
-                    int sum = countq - count;
-                    item.get(j).setHandsOnQuantity(String.valueOf(sum));
+                Double a = quanty * Double.parseDouble(txtUnitePrice.getText());
+                String total = String.valueOf(a);
+
+                ObservableList<OrdersTM> order = tblOrders.getItems();
+                String selectedItem = cmbItemCode.getSelectionModel().getSelectedItem();
+
+                for (int i = 0; i < order.size(); i++) {
+
+                    if (selectedItem.equals(order.get(i).getItemCode())) {
+                        int d = Integer.parseInt(order.get(i).getQuantity());
+                        int l = Integer.parseInt((txtQuantity.getText()));
+                        int sum1 = d + l;
+                        order.get(i).setQuantity(String.valueOf(sum1));
+                        a = sum1 * Double.parseDouble(txtUnitePrice.getText());
+                        order.get(i).setTotal(String.valueOf(a));
+
+                        for (int j = 0; j < order.size(); j++) {
+
+                            totalAll += Double.parseDouble(order.get(j).getTotal());
+                        }
+                        lblTotal.setText(totalAll + "");
+                        tblOrders.refresh();
+                        return;
+                    }
+
                 }
 
-            }
-            tblOrders.refresh();
+                JFXButton jfxButton = new JFXButton("Delete");
+                Object selectedItem4 = cmbItemCode.getSelectionModel().getSelectedItem();
+                String item = String.valueOf(selectedItem4);
 
+                OrdersTM newone = new OrdersTM(
+                        item,
+                        txtDescription.getText(),
+                        txtQuantity.getText(),
+                        txtUnitePrice.getText(),
+                        total,
+                        jfxButton
+                );
+
+
+                order.add(newone);
+                jfxButton.setOnAction(event -> {
+                    btnDelete_Action(newone);
+                });
+
+                for (int i = 0; i < order.size(); i++) {
+                    totalAll += Double.parseDouble(order.get(i).getTotal());
+                }
+
+                lblTotal.setText("" + totalAll);
+
+                // Update the stock
+                ObservableList<ItemsTM> items = FXCollections.observableList(ClasDB.items);
+                String selectedItemCode = cmbItemCode.getSelectionModel().getSelectedItem();
+
+                for (int i = 0; i < items.size(); i++) {
+                    if (selectedItemCode.equals(items.get(i).getItemId())) {
+
+                        int count = Integer.parseInt(items.get(i).getHandsOnQuantity());
+                        int countnext = Integer.parseInt(txtQuantity.getText());
+                        int newQty = (count - countnext);
+                        items.get(i).setHandsOnQuantity(String.valueOf(newQty));
+                    }
+                }
+            } else {
+                ObservableList<OrdersTM> table = tblOrders.getItems();
+                OrdersTM selectedItem1 = tblOrders.getSelectionModel().getSelectedItem();
+                ObservableList<ItemsTM> item = FXCollections.observableList(ClasDB.items);
+                ObservableList<OrdersTM> ordes1 = FXCollections.observableList(ClasDB.ordertm);
+                int value = 0;
+
+                for (int j = 0; j < table.size(); j++) {
+                    if (selectedItem1.getItemCode() == table.get(j).getItemCode()) {
+                        value = Integer.parseInt(ordes1.get(j).getQuantity());
+                        ordes1.get(j).setQuantity(txtQuantity.getText());
+                        double count = Double.parseDouble(ordes1.get(j).getQuantity());
+                        double contq = Double.parseDouble(ordes1.get(j).getUnitePrice());
+                        double sum = contq * count;
+                        totalAll += sum;
+                        lblTotal.setText(totalAll + "");
+                        ordes1.get(j).setTotal(String.valueOf(sum));
+
+                    }
+                    if (selectedItem1.getItemCode() == item.get(j).getItemId()) {
+                        int count = Integer.parseInt(ordes1.get(j).getQuantity());
+                        int countq = Integer.parseInt(item.get(j).getHandsOnQuantity() + value);
+                        int sum = countq - count;
+                        item.get(j).setHandsOnQuantity(String.valueOf(sum));
+                    }
+
+                }
+                tblOrders.refresh();
+
+
+            }
 
         }
 
@@ -340,6 +348,9 @@ public class PlaceOrderController {
 
         orders.add(new Orders(txtOrderID.getText(), txtDate.getText(), (String) cmbCustomerID.getSelectionModel().getSelectedItem(), orderDetails));
         System.out.println(orders.toString());
+        Alert alert=new Alert(Alert.AlertType.INFORMATION,"Order placed Successfully ",ButtonType.OK);
+        alert.show();
+
 
 
         txtDescription.clear();
@@ -363,14 +374,11 @@ public class PlaceOrderController {
         ObservableList<CustomerTM> customerTMS = FXCollections.observableArrayList(ClasDB.customers);
         ObservableList<ItemsTM> items = FXCollections.observableArrayList(ClasDB.items);
         ObservableList<CustomerTM> customerid = cmbCustomerID.getItems();
-        ObservableList<OrdersTM>table=FXCollections.observableArrayList();
-
-
-
+        ObservableList<OrdersTM> table = FXCollections.observableArrayList();
 
 
         for (int i = 0; i < ordersId.size(); i++) {
-            String dis=null;
+            String dis = null;
             if (orderID.equals(ordersId.get(i).getId())) {
                 for (int j = 0; j < customerTMS.size(); j++) {
 
@@ -378,34 +386,36 @@ public class PlaceOrderController {
 
                         txtOrderID.setText(ordersId.get(i).getId());
                         txtDate.setText(ordersId.get(i).getDate());
-//                        cmbCustomerID.getSelectionModel().select(ordersId.get(j).getCustomerId());
-//                        cmbCustomerID.setId(ordersId.get(j).getCustomerId());
+                        cmbCustomerID.setPromptText(ordersId.get(j).getCustomerId());
                         txtName.setText(customerTMS.get(j).getName());
-                        txtQuantity.setText(ordersId.get(i).getOrderDetails().get(i).getQuantity());
-                        txtUnitePrice.setText(String.valueOf(ordersId.get(i).getOrderDetails().get(i).getUnitPrice()));
 
-                        for (int k = 0; k <items.size() ; k++) {
 
-                            if(ordersId.get(i).getOrderDetails().get(i).getCode().equals(items.get(k).getItemId())){
-                                dis=items.get(k).getItemDiscripition();
+                        for (int k = 0; k < items.size(); k++) {
+
+                            if (ordersId.get(i).getOrderDetails().get(i).getCode().equals(items.get(k).getItemId())) {
+                                dis = items.get(k).getItemDiscripition();
 
                                 txtDescription.setText(dis);
                                 txtQOH.setText(items.get(k).getHandsOnQuantity());
                             }
 
                         }
-                        for (int l = 0; l <ordersId.get(i).getOrderDetails().size() ; l++) {
+                        for (int l = 0; l < ordersId.get(i).getOrderDetails().size(); l++) {
+                            txtQuantity.setText(ordersId.get(i).getOrderDetails().get(l).getQuantity());
+                            txtUnitePrice.setText(String.valueOf(ordersId.get(i).getOrderDetails().get(l).getUnitPrice()));
+                            cmbItemCode.setPromptText(ordersId.get(i).getOrderDetails().get(l).getCode());
+
 
                             int quantity = Integer.parseInt(ordersId.get(i).getOrderDetails().get(l).getQuantity());
                             double unitprise = ordersId.get(i).getOrderDetails().get(l).getUnitPrice();
                             double total = quantity * unitprise;
                             String tot = String.valueOf(total);
                             JFXButton Button = new JFXButton("");
-                            String qty=ordersId.get(i).getOrderDetails().get(l).getQuantity();
+                            String qty = ordersId.get(i).getOrderDetails().get(l).getQuantity();
                             String code = ordersId.get(i).getOrderDetails().get(l).getCode();
-                            String unit= String.valueOf(ordersId.get(i).getOrderDetails().get(l).getUnitPrice());
+                            String unit = String.valueOf(ordersId.get(i).getOrderDetails().get(l).getUnitPrice());
 
-                            table.add(new OrdersTM(code,dis,qty ,unit,tot,new JFXButton()));
+                            table.add(new OrdersTM(code, dis, qty, unit, tot, new JFXButton()));
 
                         }
 
@@ -418,6 +428,7 @@ public class PlaceOrderController {
 
         }
         tblOrders.setItems(table);
+
 
     }
 }

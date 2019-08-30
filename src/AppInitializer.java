@@ -15,7 +15,7 @@ public class AppInitializer extends Application {
 
     @Override
     public void start(Stage primaryStage) throws IOException {
-        URL resource = this.getClass().getResource("/FXML/DashboardCMS.fxml");
+        URL resource = this.getClass().getResource("/View/DashboardCMS.fxml");
         Parent root = FXMLLoader.load(resource);
         Scene mainScene = new Scene(root);
         primaryStage.setScene(mainScene);
